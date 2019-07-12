@@ -43,10 +43,11 @@ if __name__ == "__main__":
     if os.path.exists(root_name):
         root = load_model(root_name)
     else:
+        #文档不能正确反映单个词的词频，所以引入Jieba自带的外部词典
         dict_name = basedir + '/data/dict.txt'
         #读取字典文件，取出词频大于2的建立字典{单词：频数}
         word_freq = load_dictionary(dict_name)
-        #建立词汇树，统计互信息，信息熵
+        #建立词汇树
         root = TrieNode('*', word_freq)
         save_model(root, root_name)
 
