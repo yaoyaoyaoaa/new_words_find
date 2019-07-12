@@ -1,11 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-# @Time    : 2018/05/26 下午5:13
-# @Update  : 2018/09/28 上午10:30
-# @Author  : zhanzecheng/片刻
-# @File    : demo.py.py
-# @Software: PyCharm
-"""
+
 import os
 import jieba
 from model import TrieNode
@@ -31,6 +25,7 @@ def load_data(filename, stopwords):
 def load_data_2_root(data):
     #传入经过粗略分词
     print('------> 插入节点')
+    #对于每一行句子进行n-gram的组合
     for word_list in data:
         # tmp 表示每一行自由组合后的结果（n gram）
         # tmp: [['它'], ['是'], ['小'], ['狗'], ['它', '是'], ['是', '小'], ['小', '狗'], ['它', '是', '小'], ['是', '小', '狗']]
@@ -49,13 +44,16 @@ if __name__ == "__main__":
         root = load_model(root_name)
     else:
         dict_name = basedir + '/data/dict.txt'
+        #读取字典文件，取出词频大于2的建立字典{单词：频数}
         word_freq = load_dictionary(dict_name)
+        #建立词汇树，统计互信息，信息熵
         root = TrieNode('*', word_freq)
         save_model(root, root_name)
 
     # 加载新的文章
     #filename = 'data/demo.txt'
     filename = 'data/jianzhu.txt'
+    #data是二维数组，存储[[第一行list][第二行list].....]
     data = load_data(filename, stopwords)
     # 将新的文章插入到Root中
     load_data_2_root(data)

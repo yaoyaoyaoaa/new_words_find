@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-# @Time    : 2018/5/26 下午5:03
-# @Author  : zhanzecheng
-# @File    : model.py
-# @Software: PyCharm
-"""
 import math
 
 
@@ -52,6 +46,7 @@ class TrieNode(object):
             new_node.word_finish = True
             node.child.append(new_node)
 
+    #每次n-gram调用该函数，就会建立一个root为根的字典树并且记录下每个词组出现的次数
     def add(self, word):
         """
         添加节点，对于左熵计算时，这里采用了一个trick，用a->b<-c 来表示 cba
@@ -198,11 +193,11 @@ class TrieNode(object):
             for cha in child.child:
                 total = 0
                 p = 0.0
-                #左边词汇出现的总次数为total
+                #3gram总次数为total
                 for ch in cha.child:
                     if ch.word_finish is True and ch.isback:
                         total += ch.count
-                #ch就相当于是例子中的买4G上网卡/丢4G上网卡。。。
+                #计算该3gram出现的信息熵
                 for ch in cha.child:
                     if ch.word_finish is True and ch.isback:
                         p += (ch.count / total) * math.log(ch.count / total, 2)
@@ -230,6 +225,7 @@ class TrieNode(object):
                 total = 0
                 p = 0.0
                 #ch是cha的右边词汇
+                #total统计3gram出现的次数
                 for ch in cha.child:
                     if ch.word_finish is True and not ch.isback:
                         #total是ch在词汇右边出现的次数
